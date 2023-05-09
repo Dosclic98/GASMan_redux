@@ -68,7 +68,12 @@ public class Model {
 
         //MATRICE DI ADIACENZA ARCHI INTRASLICE
         code.append("%Making intraslice adjiacent matrix\n");
-        code.append("[intra, names] = mk_adj_mat(intrac, names, 1);\n\n");
+        code.append("[intra, names1] = mk_adj_mat(intrac, names, 1);\n\n");
+
+        // CALCOLA L'ORDINE TOPOLOGICO COME PERMUTAZIONE DEI NOMI
+        code.append("% Compute the topological order as a permutation of the cellarray names\n");
+        code.append("perm = arrayfun(@(x) find(strcmp(names,x)),names1);\n");
+        code.append("names = names1;\n\n");
 
         //ARCHI INTERSLICE (SOLO ORDINE 1)
         intersliceArcs();
@@ -300,7 +305,10 @@ public class Model {
             truncList(str, 1);
 
         code.append(str);
-        code.append("];\n\n");
+        code.append("];\n");
+
+        code.append("% Reorder number of states according to topological order computed in perm\n");
+        code.append("ns=ns(perm);\n\n");
     }
 
     private void cpdNodesCalc(ArrayList<Integer> hStates, ArrayList<Integer> obs, ArrayList<Integer> cpdNodes, ArrayList<Integer> tempNodes ) {

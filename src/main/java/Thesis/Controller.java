@@ -58,7 +58,7 @@ public class Controller {
         }
 
 
-        if(initError==false) {
+        if(!initError) {
             model = new Model();
             listenersInit();
         }
